@@ -83,7 +83,7 @@ int main(void){
 
     while(!WindowShouldClose()){
         
-        if(IsKeyPressed(KEY_SPACE)) r.add_force_at_point({0.0, 0.1, 0.0}, {1, 0, 0});
+        if(IsKeyPressed(KEY_SPACE)) r.add_force_at_point({0.0, 1.0, 0.0}, r.position + Math::Vector3{1, 0, 0});
 
         r.integrate(GetFrameTime());
         UpdateCameraCustom(camera);
