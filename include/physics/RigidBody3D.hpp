@@ -1,6 +1,7 @@
 #pragma once
 
-#include"Vector3.hpp"
+#include <iostream>
+#include "Vector3.hpp"
 #include "Quaternion.hpp"
 
 namespace Physics {
@@ -18,10 +19,12 @@ namespace Physics {
         Math::Vector3 torque_accumulator{0.0, 0.0, 0.0};
 
         RigidBody3D() = default;
+        RigidBody3D(Math::Vector3 position, Math::Quaternion orientation, double mass, double inertia_tensor) : position(position), orientation(orientation), mass(mass), inertia_tensor(inertia_tensor) {}
         ~RigidBody3D() = default;
 
         void add_force(const Math::Vector3& force){
             force_accumulator += force;
+            std::cout << force_accumulator.x << " | " << force_accumulator.y << " | " << force_accumulator.z << "\n";
         }
 
         void add_force_at_point(const Math::Vector3& force, const Math::Vector3& point){
