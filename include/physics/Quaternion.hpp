@@ -73,6 +73,18 @@ namespace Math {
             return lhs;
         }
 
+        [[nodiscard]] constexpr Quaternion operator*(double scalar) const {
+            return Quaternion(w * scalar, x * scalar, y * scalar, z * scalar);
+        }
+
+        [[nodiscard]] constexpr friend Quaternion operator*(double scalar, const Quaternion& q) {
+            return q * scalar;
+        }
+
+        [[nodiscard]] constexpr Quaternion operator+(const Quaternion& rhs) const {
+            return Quaternion(w + rhs.w, x + rhs.x, y + rhs.y, z + rhs.z);
+        }
+
         [[nodiscard]] constexpr Vector3 rotate_vector(const Vector3& v) const {
             Vector3 q_vec(x, y, z);
             Vector3 uv = q_vec.cross(v);
