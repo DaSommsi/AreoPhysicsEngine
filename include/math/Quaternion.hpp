@@ -93,5 +93,5 @@ namespace Math {
             return v + (uv * (2.0 * w)) + (uuv * 2.0);
         }
     };
-
+    
 } 

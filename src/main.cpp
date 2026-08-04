@@ -1,24 +1,12 @@
 #include "raylib.h"
 #include "rlgl.h"
 #include "raymath.h"
-#include <physics/Vector3.hpp>
-#include <physics/Quaternion.hpp>
+#include <math/Vector3.hpp>
+#include <math/Quaternion.hpp>
 #include <physics/RigidBody3D.hpp>
-
-[[nodiscard]] constexpr Vector3 ToRaylib(const Math::Vector3& b) {
-    return Vector3{(float)b.x, (float)b.y, (float)b.z};
-}
-
-[[nodiscard]] constexpr Matrix QuaternionToRaylibMatrix(const Math::Quaternion& q) {
-    float x = q.x, y = q.y, z = q.z, w = q.w;
-
-    Matrix m = { 0 };
-    m.m0  = 1.0f - 2.0f*(y*y + z*z);  m.m4  = 2.0f*(x*y - z*w);        m.m8  = 2.0f*(x*z + y*w);        m.m12 = 0.0f;
-    m.m1  = 2.0f*(x*y + z*w);        m.m5  = 1.0f - 2.0f*(x*x + z*z);  m.m9  = 2.0f*(y*z - x*w);        m.m13 = 0.0f;
-    m.m2  = 2.0f*(x*z - y*w);        m.m6  = 2.0f*(y*z + x*w);        m.m10 = 1.0f - 2.0f*(x*x + y*y);  m.m14 = 0.0f;
-    m.m3  = 0.0f;                    m.m7  = 0.0f;                    m.m11 = 0.0f;                    m.m15 = 1.0f;
-    return m;
-}
+#include <math/MathUtils.hpp>
+#include <physics/GameObject.hpp>
+#include <vector>
 
 void DrawVector3D(Vector3 start, Vector3 vector, Color color) {
     // Das Ende des Vektors ist: Startpunkt + Vektor
@@ -72,6 +60,8 @@ int main(void){
     InitWindow(1920,1080, "PhysicsEngine");
     SetTargetFPS(60);
 
+    std::vector<Core::GameObject&> game_objects;
+
     Camera3D camera = {0};
     camera.position = {0.0f, 10.0f, 10.0f};
     camera.target   = {0.0f, 0.0f, 0.0f};
@@ -79,33 +69,22 @@ int main(void){
     camera.fovy     = 45.0f;
     camera.projection = CAMERA_PERSPECTIVE;
 
-    Physics::RigidBody3D r({0.0, 0.0, 0.0}, {1.0, 0.0, 0.0, 0.0}, 1.0, 1.0);
+    Physics::RigidBody3D r({0.0, 0.0, 0.0}, {1.0, 0.0, 0.0, 0.0}, 1.0);
+    Core::GameObject game_object();
+    
 
     while(!WindowShouldClose()){
         
         if(IsKeyPressed(KEY_SPACE)) r.add_force_at_point({0.0, 1.0, 0.0}, r.position + Math::Vector3{1, 0, 0});
 
-        r.integrate(GetFrameTime());
         UpdateCameraCustom(camera);
-
+        
         BeginDrawing();
             ClearBackground(RAYWHITE);
-
             BeginMode3D(camera);
                 
                 DrawGrid(100, 1.0f);
 
-                rlPushMatrix();
-                    rlTranslatef((float)r.position.x, (float)r.position.y, (float)r.position.z);
-                    rlMultMatrixf(MatrixToFloatV(QuaternionToRaylibMatrix(r.orientation)).v);
-
-                    DrawCube({0, 0, 0}, 2.0f, 2.0f, 2.0f, RED);
-                    DrawCubeWires({0, 0, 0}, 2.0f, 2.0f, 2.0f, BLACK);
-
-                    DrawVector3D({0,0,0}, {1.5f, 0, 0}, RED);
-                    DrawVector3D({0,0,0}, {0, 1.5f, 0}, GREEN);
-                    DrawVector3D({0,0,0}, {0, 0, 1.5f}, BLUE);
-                rlPopMatrix();
             EndMode3D();
         EndDrawing();
 
