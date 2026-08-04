@@ -1,9 +1,9 @@
 #pragma once
 
 #include <iostream>
-#include "Vector3.hpp"
-#include "Quaternion.hpp"
-#include "Matrix3x3.hpp"
+#include "math/Vector3.hpp"
+#include "math/Quaternion.hpp"
+#include "math/Matrix3x3.hpp"
 
 namespace Physics {
     

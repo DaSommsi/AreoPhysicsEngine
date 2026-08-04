@@ -5,7 +5,8 @@
 #include <math/Quaternion.hpp>
 #include <physics/RigidBody3D.hpp>
 #include <math/MathUtils.hpp>
-#include <physics/GameObject.hpp>
+#include <core/GameObject.hpp>
+#include <core/World.hpp>
 #include <vector>
 
 void DrawVector3D(Vector3 start, Vector3 vector, Color color) {
@@ -60,7 +61,7 @@ int main(void){
     InitWindow(1920,1080, "PhysicsEngine");
     SetTargetFPS(60);
 
-    std::vector<Core::GameObject&> game_objects;
+    Core::World world;
 
     Camera3D camera = {0};
     camera.position = {0.0f, 10.0f, 10.0f};
@@ -69,20 +70,21 @@ int main(void){
     camera.fovy     = 45.0f;
     camera.projection = CAMERA_PERSPECTIVE;
 
-    Physics::RigidBody3D r({0.0, 0.0, 0.0}, {1.0, 0.0, 0.0, 0.0}, 1.0);
-    Core::GameObject game_object();
-    
+    Physics::RigidBody3D cube_body({0.0, 5.0, 0.0}, {1.0, 0.0, 0.0, 0.0}, 2.0);
+    auto* cube = world.create_object(cube_body, RED);
+    cube->set_collider<Physics::BoxCollider>(Math::Vector3{2.0, 2.0, 2.0});
 
     while(!WindowShouldClose()){
-        
-        if(IsKeyPressed(KEY_SPACE)) r.add_force_at_point({0.0, 1.0, 0.0}, r.position + Math::Vector3{1, 0, 0});
+        double dt = GetFrameTime();
 
+        world.update(dt);
         UpdateCameraCustom(camera);
         
         BeginDrawing();
             ClearBackground(RAYWHITE);
             BeginMode3D(camera);
                 
+                world.draw();
                 DrawGrid(100, 1.0f);
 
             EndMode3D();

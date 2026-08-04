@@ -3,8 +3,8 @@
 #include "raylib.h"
 #include "rlgl.h"
 #include "raymath.h"
-#include "Collider.hpp"
-#include "RigidBody3D.hpp"
+#include "physics/Collider.hpp"
+#include "physics/RigidBody3D.hpp"
 #include <memory>
 
 namespace Core{
@@ -29,7 +29,7 @@ namespace Core{
             collider = std::make_unique<T>(&body, std::forward<Args>(args)...);
         }
 
-        void Update(double dt){
+        void update(double dt){
             body.integrate(dt);
         }
 

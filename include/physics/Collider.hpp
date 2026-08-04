@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Vector3.hpp"
-#include "Quaternion.hpp"
-#include "Matrix3x3.hpp"
-#include "RigidBody3d.hpp"
-#include "MathUtils.hpp"
+#include "math/Vector3.hpp"
+#include "math/Quaternion.hpp"
+#include "math/Matrix3x3.hpp"
+#include "physics/RigidBody3d.hpp"
+#include "math/MathUtils.hpp"
 #include <vector>
 #include <array>
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Vector3.hpp"
-#include "Quaternion.hpp"
+#include "math/Vector3.hpp"
+#include "math/Quaternion.hpp"
 #include <array>
 
 namespace Math {
